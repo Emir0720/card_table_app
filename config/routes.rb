@@ -2,10 +2,9 @@ Rails.application.routes.draw do
   root 'home#index'
 
   resources :cards  
-  resources :columns, only: [:index, :create, :show] do
+  resources :columns, only: [:index, :create, :show, :destroy] do
     member do
       put 'rename', to: 'columns#rename', as: 'rename'
-      delete 'delete', to: 'columns#destroy', as: 'delete'
     end
   end
   

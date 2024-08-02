@@ -23,7 +23,6 @@
             <div class="column-menu hidden" data-column-menu-target="menu">
               <div class="column-menu-item" data-action="click->column-menu#addCard">Add a card</div>
               <div class="column-menu-item" data-action="click->column-menu#rename">Rename</div>
-              <div class="column-menu-item" data-action="click->column-menu#delete">Put in the trash</div>
             </div>
             <h2 class="text-xl font-bold mb-4">
               <%= link_to column.name, column_path(column) %> (<%= column.cards.count %>)
@@ -54,58 +53,63 @@
 
     <!-- Modals -->
     <div id="add-card-modal" class="modal hidden">
-      <div class="modal-content">
-        <span class="close" onclick="closeModal('add-card-modal')">&times;</span>
-        <h2 class="text-2xl font-bold mb-4 text-left">Add a new card to Triage</h2>
-        <%= form_with model: Card.new, url: cards_path, local: true, id: "new-card-form" do |form| %>
-          <div class="mb-4">
-            <%= form.label :title, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
-            <%= form.text_field :title, placeholder: "Type a card title...", class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
-          </div>
-          <div class="mb-4">
-            <%= form.label :assigned_to, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
-            <%= form.text_field :assigned_to, placeholder: "Type names to assign...", class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
-          </div>
-          <div class="mb-4">
-            <%= form.label :due_on, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
-            <%= form.date_field :due_on, placeholder: "Select a due date", class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
-          </div>
-          <div class="mb-4">
-            <%= form.label :description, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
-            <%= form.text_area :description, placeholder: "Describe your card here...", rows: 4, class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
-          </div>
-          <div class="mt-4 flex justify-between">
-            <%= form.submit "Save card", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg" %>
-            <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg" onclick="closeModal('add-card-modal')">
-              Cancel
-            </button>
-          </div>
-        <% end %>
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('add-card-modal')">&times;</span>
+    <h2 class="text-2xl font-bold mb-4 text-left">Add a new card</h2>
+    <%= form_with model: Card.new, url: cards_path, local: true, id: "new-card-form" do |form| %>
+      <%= form.hidden_field :column_id, id: 'card-column-id' %>
+      <div class="mb-4">
+        <%= form.label :title, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
+        <%= form.text_field :title, placeholder: "Type a card title...", class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
       </div>
-    </div>
+      <div class="mb-4">
+        <%= form.label :assigned_to, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
+        <%= form.text_field :assigned_to, placeholder: "Type names to assign...", class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
+      </div>
+      <div class="mb-4">
+        <%= form.label :due_on, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
+        <%= form.date_field :due_on, placeholder: "Select a due date", class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
+      </div>
+      <div class="mb-4">
+        <%= form.label :description, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
+        <%= form.text_area :description, placeholder: "Describe your card here...", rows: 4, class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
+      </div>
+      <div class="mt-4 flex justify-between">
+        <%= form.submit "Save card", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg" %>
+        <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg" onclick="closeModal('add-card-modal')">
+          Cancel
+        </button>
+      </div>
+    <% end %>
+  </div>
+</div>
 
-    <div id="add-column-modal" class="modal hidden">
-      <div class="modal-content">
-        <span class="close" onclick="closeModal('add-column-modal')">&times;</span>
-        <h2 class="text-2xl font-bold mb-4 text-left">Add a new column</h2>
-        <%= form_with model: Column.new, url: columns_path, local: true, id: "new-column-form" do |form| %>
-          <div class="mb-4">
-            <%= form.label :name, "Name this column", class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
-            <%= form.text_field :name, class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
-          </div>
-          <div class="mb-4">
-            <%= form.label :description, "Add an optional description", class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
-            <%= form.text_area :description, class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
-          </div>
-          <div class="mt-4 flex justify-between">
-            <%= form.submit "Save column", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg" %>
-            <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg" onclick="closeModal('add-column-modal')">
-              Cancel
-            </button>
-          </div>
-        <% end %>
+
+<div id="add-column-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('add-column-modal')">&times;</span>
+    <h2 class="text-2xl font-bold mb-4 text-left"><%= @column.new_record? ? "Add Column" : "Rename Column" %></h2>
+    <%= form_with model: @column, url: @column.new_record? ? columns_path : column_path(@column), local: true, method: @column.new_record? ? :post : :patch, id: "rename-column-form" do |form| %>
+      <%= form.hidden_field :id, id: 'column_id' %>
+      <div class="mb-4">
+        <%= form.label :name, "Column Name", class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
+        <%= form.text_field :name, class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm", id: 'column_name' %>
       </div>
-    </div>
+      <div class="mb-4">
+        <%= form.label :description, "Description", class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
+        <%= form.text_area :description, class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
+      </div>
+      <div class="mt-4 flex justify-between">
+        <%= form.submit @column.new_record? ? "Add column" : "Save changes", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg" %>
+        <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg" onclick="closeModal('add-column-modal')">
+          Cancel
+        </button>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
 
     <!-- Dynamic Columns -->
     <div class="flex flex-wrap space-x-4 mt-8" data-controller="drag-drop column-menu">
@@ -116,11 +120,17 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h12M6 6h12m-6 12h6" />
         </svg>
       </div>
+
       <div class="column-menu hidden" data-column-menu-target="menu">
-        <div class="column-menu-item" data-action="click->column-menu#addCard">Add a card</div>
-        <div class="column-menu-item" data-action="click->column-menu#rename">Rename</div>
-        <div class="column-menu-item" data-action="click->column-menu#delete">Put in the trash</div>
-      </div>
+  <div class="column-menu-item" data-action="click->column-menu#addCard">Add a card</div>
+  <div class="column-menu-item" data-action="click->column-menu#rename">Rename</div>
+  <div class="column-menu-item">
+    <%= button_to "Delete", column_path(column), method: :delete, class: "text-red-500 hover:text-red-700 font-semibold", data: { turbo_confirm: "Are you sure you want to delete this column?" } %>
+  </div>
+</div>
+
+
+
       <h2 class="text-xl font-bold mb-4">
         <%= link_to column.name, column_path(column) %> (<%= column.cards.count %>)
       </h2>

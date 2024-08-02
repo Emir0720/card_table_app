@@ -28,8 +28,13 @@ class ColumnsController < ApplicationController
   
 
   def edit
-    # @column already set by before_action
+    @column = Column.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: @column }
+    end
   end
+  
 
   def update
     if @column.update(column_params)

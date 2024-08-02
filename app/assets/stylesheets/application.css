@@ -12,7 +12,6 @@
   align-items: center;
 }
 
-
 .modal-content {
   background-color: #fff;
   margin: auto;
@@ -23,7 +22,6 @@
   border-radius: 10px;
   position: relative;
 }
-
 
 .close {
   color: #aaa;
@@ -40,7 +38,6 @@
   text-decoration: none;
   cursor: pointer;
 }
-
 
 .column-menu {
   position: absolute;
@@ -72,4 +69,3 @@
 .column-menu-item:not(:last-child) {
   border-bottom: 1px solid #ddd;
 }
-

@@ -24,39 +24,39 @@ export default class extends Controller {
 
   // Kart ekleme işlevi
   addCard(event) {
-    const columnId = event.target.closest('.list').dataset.id;
-    const modal = document.getElementById('add-card-modal');
-    const columnIdInput = document.getElementById('card_column_id');
-  
-    if (modal && columnIdInput) {
-      modal.classList.remove('hidden');
-      columnIdInput.value = columnId;
-    } else {
-      console.error('Required elements for adding card not found');
-    }
-  }
-  
+    const columnId = this.element.dataset.id
+    const url = `/columns/${columnId}/cards/new`
 
-  // Kolon adını yeniden adlandırma işlevi
-  rename(event) {
-    const columnId = event.target.closest('.list').dataset.id;
-    const columnName = event.target.closest('.list').querySelector('h2 a').textContent;
-  
-    const modal = document.getElementById('add-column-modal');
-    const columnNameInput = modal.querySelector('#column_name');
-    const columnIdInput = modal.querySelector('#column_id');
-    const form = modal.querySelector('form');
-  
-    if (columnNameInput && columnIdInput && form) {
-      columnNameInput.value = columnName;
-      columnIdInput.value = columnId;
-      form.action = `/columns/${columnId}`;
-      modal.classList.remove('hidden');
+    // Update the form URL and open the modal
+    const form = document.querySelector("#new-card-form")
+    if (form) {
+      form.action = url
+      document.querySelector("#add-card-modal").classList.remove("hidden")
     } else {
-      console.error('Required elements for renaming column not found');
+      console.error("Form not found")
     }
   }
-  
+
+ // Kolon adını yeniden adlandırma işlevi
+rename(event) {
+  const columnId = event.target.closest('.list').dataset.id;
+  const columnName = event.target.closest('.list').querySelector('h2 a').textContent;
+
+  const modal = document.getElementById('add-column-modal');
+  const columnNameInput = modal.querySelector('#column_name');
+  const columnIdInput = modal.querySelector('#column_id');
+  const form = modal.querySelector('form');
+
+  if (columnNameInput && columnIdInput && form) {
+    columnNameInput.value = columnName;
+    columnIdInput.value = columnId;
+    form.action = `/columns/${columnId}`;
+    modal.classList.remove('hidden');
+  } else {
+    console.error('Required elements for renaming column not found');
+  }
+}
+
 
   // Kolonu silme işlevi
   delete(event) {
