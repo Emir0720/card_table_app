@@ -1,0 +1,11 @@
+<div class="column bg-gray-200 p-4 rounded mb-4 border border-gray-300">
+  <h2><%= link_to column.name, column_path(column) %></h2>
+  <% if column.description.present? %>
+    <p><%= column.description %></p>
+  <% end %>
+  <div class="cards" data-column-id="<%= column.id %>">
+    <% column.cards.each do |card| %>
+      <%= render partial: 'cards/card', locals: { card: card } %>
+    <% end %>
+  </div>
+</div>

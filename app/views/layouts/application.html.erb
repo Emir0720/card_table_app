@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CardTableApp</title>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_importmap_tags %>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+  </head>
+
+  <body>
+    <nav>
+      <div class="container mx-auto flex justify-between items-center">
+        <% if logged_in? %>
+          <%= button_to "Logout", logout_path, method: :delete, class: "bg-red-500 text-white py-2 px-4 rounded" %>
+        <% else %>
+          <!-- Remove these lines if the problem persists -->
+          <!-- <%= link_to "Login", login_path, class: "text-white hover:underline" %> -->
+          <!-- <%= link_to "Sign Up", signup_path, class: "text-white hover:underline" %> -->
+        <% end %>
+      </div>
+    </nav>
+    
+    <%= yield %>
+
+    <!-- Add Card Modal -->
+    <div id="add-card-modal" class="modal hidden">
+      <form>
+        <input type="hidden" name="column_id" />
+        <input type="text" name="card_name" />
+        <button type="submit">Add Card</button>
+      </form>
+      <button data-action="click->column-menu#closeModal" data-column-menu-target="close">Close</button>
+    </div>
+
+    <!-- Rename Column Modal -->
+    <div id="rename-column-modal" class="modal hidden">
+      <form>
+        <input type="hidden" name="column_id" />
+        <input type="text" name="name" />
+        <button type="submit">Rename Column</button>
+      </form>
+      <button data-action="click->column-menu#closeModal" data-column-menu-target="close">Close</button>
+    </div>
+
+    <!-- Delete Column Confirm Modal -->
+    <div id="delete-confirm-modal" class="modal hidden">
+      <form method="post" action="/columns">
+        <input type="hidden" name="column_id" />
+        <button type="submit">Delete Column</button>
+      </form>
+      <button data-action="click->column-menu#closeModal" data-column-menu-target="close">Close</button>
+    </div>
+  </body>
+</html>

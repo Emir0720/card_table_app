@@ -1,0 +1,20 @@
+<h1 class="text-3xl font-bold mb-6">
+  <%= @column.name %> (<%= @column.cards.count %>)
+</h1>
+
+<button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-6" data-action="click->card-form#toggle">
+  + Add a card
+</button>
+
+<div class="p-6 bg-gray-100 border border-gray-300 rounded-lg shadow-md">
+  <p class="text-lg font-bold text-gray-800 mb-2">Subscribers</p>
+  <p class="text-base text-gray-700 mb-4">No one will be notified when someone adds a card or comments on this <%= @column.name.downcase %> list.</p>
+  <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded mb-4">
+    Add/remove people…
+  </button>
+  <p class="text-lg font-bold text-gray-800 mb-2">You’re not subscribed</p>
+  <p class="text-base text-gray-700 mb-4">You won’t be notified when comments are posted.</p>
+  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    Subscribe me
+  </button>
+</div>

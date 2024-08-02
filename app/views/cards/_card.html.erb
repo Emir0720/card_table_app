@@ -1,0 +1,22 @@
+<div id="card-<%= card.id %>" class="bg-white p-2 rounded mb-2 border border-gray-300" draggable="true" data-id="<%= card.id %>" style="border: 2px solid gray; border-radius: 4px;">
+  <h3><%= card.title %></h3>
+  <p><%= card.description %></p>
+  <p><small><%= card.assigned_to %> - <%= card.due_on %></small></p>
+
+  <!-- 3 dots menu -->
+  <div class="relative float-right" data-controller="dropdown">
+    <button data-action="click->dropdown#toggle" class="text-gray-600 hover:text-gray-900 focus:outline-none" aria-label="More actions">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="1.5" />
+        <circle cx="19" cy="12" r="1.5" />
+        <circle cx="5" cy="12" r="1.5" />
+      </svg>
+    </button>
+    <% if card.persisted? %>
+      <div class="hidden absolute mt-2 bg-white shadow-lg rounded-md" data-dropdown-target="menu">
+        <%= link_to 'Edit', edit_card_path(card), class: 'block px-4 py-2 text-gray-800 hover:bg-gray-200' %>
+        <%= button_to 'Delete', card, method: :delete, data: { confirm: 'Are you sure?' }, class: 'block px-4 py-2 text-red-600 hover:bg-red-100' %>
+      </div>
+    <% end %>
+  </div>
+</div>

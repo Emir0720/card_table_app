@@ -1,0 +1,7 @@
+<%= turbo_frame_tag dom_id(@card, :form) do %>
+    <%= form_with model: @card, local: false do |form| %>
+      <!-- Form fields go here -->
+      <%= form.submit %>
+    <% end %>
+  <% end %>
+  

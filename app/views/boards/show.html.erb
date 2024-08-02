@@ -1,0 +1,10 @@
+<h1><%= @board.name %></h1>
+<div id="lists">
+  <%= turbo_frame_tag "lists" do %>
+    <%= render @board.lists %>
+  <% end %>
+</div>
+<%= form_with model: [@board, List.new], local: false do |form| %>
+  <%= form.text_field :name %>
+  <%= form.submit "Add List" %>
+<% end %>

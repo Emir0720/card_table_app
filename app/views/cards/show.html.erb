@@ -1,0 +1,40 @@
+<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+  <h1 class="text-2xl font-bold mb-4"><%= @card.title %></h1>
+
+  <div class="relative" data-controller="menu">
+    <button id="menu-button" class="text-gray-400 hover:text-gray-600 focus:outline-none" aria-expanded="true" aria-haspopup="true" data-action="click->menu#toggle">
+      •••
+    </button>
+    <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" data-menu-target="dropdown">
+      <div class="py-1" role="none">
+        <%= link_to 'Edit', edit_card_path(@card), class: "text-gray-700 block px-4 py-2 text-sm", role: "menuitem" %>
+        <%= form_with model: @card, method: :delete, data: { turbo_confirm: 'Are you sure you want to delete this card?' }, class: "inline-block" do |form| %>
+          <button type="submit" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Put in the trash</button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <p class="text-gray-600">Column: <span class="font-semibold"><%= @card.column.name %></span></p>
+    <p class="text-gray-600">Added by <span class="font-semibold"><%= @card.assigned_to %></span> <%= time_ago_in_words(@card.created_at) %> ago</p>
+    <p class="text-gray-600">Assigned to: <span class="font-semibold"><%= @card.assigned_to %></span></p>
+    <p class="text-gray-600">Due on: <span class="font-semibold"><%= @card.due_on.strftime("%a, %b %d") %></span></p>
+    <p class="text-gray-600">Notes: <span class="font-semibold"><%= @card.description %></span></p>
+  </div>
+
+  <div class="mb-4">
+    <h2 class="text-xl font-semibold mb-2">Steps</h2>
+    <p class="text-gray-600">Add steps to this card</p>
+  </div>
+
+  <div class="mb-4">
+    <h2 class="text-xl font-semibold mb-2">Subscribers</h2>
+    <p class="text-gray-600">1 person will be notified when someone comments on this card.</p>
+    <p class="text-gray-600 font-semibold"><%= @card.assigned_to %></p>
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add/remove people…</button>
+    <p class="text-gray-600 mt-2 font-bold">You’re subscribed</p>
+    <p class="text-gray-600">You’ll get a notification when someone comments on this card.</p>
+    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2">Subscribe me</button>
+  </div>
+</div>

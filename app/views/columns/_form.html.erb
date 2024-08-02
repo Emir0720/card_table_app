@@ -1,0 +1,16 @@
+<%= form_with model: @column, url: columns_path, local: false, id: "new-column-form" do |form| %>
+  <div>
+    <%= form.label :name, "Name this column" %>
+    <%= form.text_field :name, class: "w-full p-2 border border-gray-300 rounded" %>
+  </div>
+  <div class="mt-2">
+    <%= form.label :description, "Add an optional description" %>
+    <%= form.text_area :description, class: "w-full p-2 border border-gray-300 rounded" %>
+  </div>
+  <div class="mt-4">
+    <%= form.submit "Add Column", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+    <button type="button" id="cancel-add-column" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" data-action="click->column-form#toggle">
+      Cancel
+    </button>
+  </div>
+<% end %>
