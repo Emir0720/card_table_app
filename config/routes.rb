@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
   root 'home#index'
 
-  resources :cards  
-  resources :columns, only: [:index, :create, :show, :destroy] do
+  resources :columns do
+    resources :cards 
     member do
       put 'rename', to: 'columns#rename', as: 'rename'
+      post 'update_color', to: 'columns#update_color'
     end
   end
   

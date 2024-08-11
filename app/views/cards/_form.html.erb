@@ -1,7 +1,24 @@
-<%= turbo_frame_tag dom_id(@card, :form) do %>
-    <%= form_with model: @card, local: false do |form| %>
-      <!-- Form fields go here -->
-      <%= form.submit %>
-    <% end %>
-  <% end %>
-  
+<%= form_with model: [@column.id, @card], url: column_cards_path(@column.id), local: true, id: "new-card-form" do |form| %>
+  <div class="mb-4">
+    <%= form.label :title, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
+    <%= form.text_field :title, placeholder: "Type a card title...", class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
+  </div>
+  <div class="mb-4">
+    <%= form.label :assigned_to, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
+    <%= form.text_field :assigned_to, placeholder: "Type names to assign...", class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
+  </div>
+  <div class="mb-4">
+    <%= form.label :due_on, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
+    <%= form.date_field :due_on, placeholder: "Select a due date", class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
+  </div>
+  <div class="mb-4">
+    <%= form.label :description, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
+    <%= form.text_area :description, placeholder: "Describe your card here...", rows: 4, class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
+  </div>
+  <div class="mt-4 flex justify-between">
+    <%= form.submit "Save card", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg" %>
+    <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg" onclick="closeModal('add-card-modal')">
+      Cancel
+    </button>
+  </div>
+<% end %>

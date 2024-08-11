@@ -1,64 +1,112 @@
 import { Controller } from "@hotwired/stimulus";
 
-// Connects to data-controller="column-menu"
 export default class extends Controller {
-  static targets = ["menu"];
+  static targets = ["menu", "renameForm", "column"];
 
-  // Menü açma/kapatma işlevi
   toggleMenu(event) {
     event.preventDefault();
 
-    // Tüm menüleri gizle
+    
     this.menuTargets.forEach((menu) => {
       if (menu !== event.currentTarget.nextElementSibling) {
         menu.classList.remove("visible");
       }
     });
 
-    // Tıklanan menüyü göster/gizle
+    
     const targetMenu = event.currentTarget.nextElementSibling;
     if (targetMenu) {
       targetMenu.classList.toggle("visible");
     }
   }
 
-  // Kart ekleme işlevi
-  addCard(event) {
-    const columnId = this.element.dataset.id
-    const url = `/columns/${columnId}/cards/new`
+ changeColor(event) {
+    const color = event.target.dataset.color;
+    const columnId = this.element.closest('[data-id]').dataset.id;
 
-    // Update the form URL and open the modal
-    const form = document.querySelector("#new-card-form")
-    if (form) {
-      form.action = url
-      document.querySelector("#add-card-modal").classList.remove("hidden")
+    const form = document.createElement("form");
+    form.action = `/columns/${columnId}/update_color`;
+    form.method = "POST";
+    form.style.display = "none"; // Formun sayfada görünmemesi için
+
+    // Renk inputu oluştur
+    const inputColor = document.createElement("input");
+    inputColor.type = "hidden";
+    inputColor.name = "column[color]";
+    inputColor.value = color;
+    form.appendChild(inputColor);
+
+    // CSRF token inputu oluştur
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    const inputCsrf = document.createElement("input");
+    inputCsrf.type = "hidden";
+    inputCsrf.name = "authenticity_token";
+    inputCsrf.value = csrfToken;
+    form.appendChild(inputCsrf);
+
+    // Formu body'ye ekle ve submit et
+    document.body.appendChild(form);
+    form.submit();
+  }
+
+  
+  
+  
+  
+  
+  
+  
+  addCard(event) {
+    event.preventDefault(); 
+
+    const columnId = event.currentTarget.dataset.columnId;
+    const url = `/columns/${columnId}/cards/new`;
+    Turbo.visit(url, { frame: "new_card" });
+
+    // Modal'ı aç
+    const modal = document.querySelector("#add-card-modal");
+    if (modal) {
+      modal.classList.remove("hidden");
+      modal.classList.add("visible");
+      const form = modal.querySelector("#new-card-form");
+      if (form) {
+        form.action = url;
+      } else {
+        console.error("Form not found");
+      }
     } else {
-      console.error("Form not found")
+      console.error("Modal not found");
     }
   }
 
- // Kolon adını yeniden adlandırma işlevi
-rename(event) {
-  const columnId = event.target.closest('.list').dataset.id;
-  const columnName = event.target.closest('.list').querySelector('h2 a').textContent;
-
-  const modal = document.getElementById('add-column-modal');
-  const columnNameInput = modal.querySelector('#column_name');
-  const columnIdInput = modal.querySelector('#column_id');
-  const form = modal.querySelector('form');
-
-  if (columnNameInput && columnIdInput && form) {
-    columnNameInput.value = columnName;
-    columnIdInput.value = columnId;
-    form.action = `/columns/${columnId}`;
-    modal.classList.remove('hidden');
-  } else {
-    console.error('Required elements for renaming column not found');
+  
+  toggleRenameForm(event) {
+    event.preventDefault();
+    
+    
+    const form = this.renameFormTarget;
+    if (form) {
+      form.classList.toggle("hidden");
+    } else {
+      console.error("Rename form not found");
+    }
   }
-}
 
+  
+  rename(event) {
+    event.preventDefault();
 
-  // Kolonu silme işlevi
+    
+    const form = this.renameFormTarget.querySelector('form');
+
+    if (form) {
+      form.submit();
+    } else {
+      console.error("Form not found for renaming");
+    }
+  }
+
+  
   delete(event) {
     const columnId = event.target.closest('.list').dataset.id;
     const deleteForm = document.getElementById(`delete-column-${columnId}`);
@@ -69,8 +117,8 @@ rename(event) {
       console.error(`Delete form for column ID ${columnId} not found`);
     }
   }
-  
 
+  
   openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -80,6 +128,7 @@ rename(event) {
       console.error(`Modal with ID ${modalId} not found`);
     }
   }
+
   
   closeModal(event) {
     const modal = event.target.closest('.modal');
@@ -90,5 +139,4 @@ rename(event) {
       console.error('Modal not found when trying to close');
     }
   }
-  
 }

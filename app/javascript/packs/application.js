@@ -98,3 +98,32 @@ document.addEventListener('turbolinks:load', () => {
 
   document.addEventListener('DOMNodeInserted', enableDragAndDrop);
 });
+
+
+
+
+document.addEventListener("turbo:load", () => {
+  const renameButtons = document.querySelectorAll("[data-action='click->column-menu#rename']");
+  
+  renameButtons.forEach(button => {
+    button.addEventListener("click", (event) => {
+      const columnId = button.closest("[data-id]").getAttribute("data-id");
+      const columnName = button.closest("[data-id]").querySelector("h2").textContent.trim();
+      const columnDescription = ""; 
+      
+      document.getElementById("rename_column_id").value = columnId;
+      document.getElementById("rename_column_name").value = columnName;
+      document.getElementById("rename_column_description").value = columnDescription;
+      
+      openModal('rename-column-modal');
+    });
+  });
+});
+
+function openModal(modalId) {
+  document.getElementById(modalId).classList.remove("hidden");
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.add("hidden");
+}

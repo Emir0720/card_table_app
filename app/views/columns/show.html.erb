@@ -1,20 +1,32 @@
-<h1 class="text-3xl font-bold mb-6">
-  <%= @column.name %> (<%= @column.cards.count %>)
-</h1>
+<div class="bg-[#FCF8F3] min-h-screen py-4">
+  <div class="bg-white max-w-6xl mx-auto px-4 py-6 rounded-lg shadow-md flex flex-col h-full">
+    <div class="flex items-center justify-between mb-4 border-b border-gray-300 pb-2">
+      <%= link_to "+ Add a card", new_column_card_path(@column), class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
+      <h1 class="text-3xl font-bold text-center flex-grow">
+        <%= @column.name %> (<%= @column.cards.count %>)
+      </h1>
+    </div>
 
-<button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-6" data-action="click->card-form#toggle">
-  + Add a card
-</button>
+    <div id="cards" class="flex flex-col items-center">
+      <% @cards.each do |card| %>
+        <a href="<%= column_card_path(@column, card) %>" class="w-full md:w-3/4 lg:w-2/3 p-4 mb-4 bg-white border border-gray-300 rounded-lg shadow-md hover:bg-gray-100">
+          <h3 class="text-lg font-bold mb-2"><%= card.title %></h3>
+          <p class="text-gray-700 mb-2">By <%= card.assigned_to %>, on <%= card.created_at.strftime("%B %d, %Y") %></p>
+        </a>
+      <% end %>
+    </div>
 
-<div class="p-6 bg-gray-100 border border-gray-300 rounded-lg shadow-md">
-  <p class="text-lg font-bold text-gray-800 mb-2">Subscribers</p>
-  <p class="text-base text-gray-700 mb-4">No one will be notified when someone adds a card or comments on this <%= @column.name.downcase %> list.</p>
-  <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded mb-4">
-    Add/remove people…
-  </button>
-  <p class="text-lg font-bold text-gray-800 mb-2">You’re not subscribed</p>
-  <p class="text-base text-gray-700 mb-4">You won’t be notified when comments are posted.</p>
-  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-    Subscribe me
-  </button>
+    <div class=" p-6 bg-gray-100 border border-gray-300 rounded-lg shadow-md mb-6">
+      <p class="text-lg font-bold text-gray-800 mb-2">Subscribers</p>
+      <p class="text-base text-gray-700 mb-4">No one will be notified when someone adds a card or comments on this <%= @column.name.downcase %> list.</p>
+      <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded mb-4">
+        Add/remove people…
+      </button>
+      <p class="text-lg font-bold text-gray-800 mb-2">You’re not subscribed</p>
+      <p class="text-base text-gray-700 mb-4">You won’t be notified when comments are posted.</p>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Subscribe me
+      </button>
+    </div>
+  </div>
 </div>

@@ -16,11 +16,11 @@ export default class extends Controller {
 
       card.addEventListener('dragstart', event => {
         event.dataTransfer.setData('text/plain', event.target.dataset.id);
-        event.target.classList.add('dragging'); 
+        event.target.classList.add('dragging');
       });
 
       card.addEventListener('dragend', event => {
-        event.target.classList.remove('dragging'); 
+        event.target.classList.remove('dragging');
       });
     });
 
@@ -33,11 +33,11 @@ export default class extends Controller {
 
   handleDragOver(event) {
     event.preventDefault();
-    event.target.classList.add('drag-over'); 
+    event.target.classList.add('drag-over');
   }
 
   handleDragLeave(event) {
-    event.target.classList.remove('drag-over'); 
+    event.target.classList.remove('drag-over');
   }
 
   handleDrop(event) {
@@ -49,12 +49,12 @@ export default class extends Controller {
     const card = document.querySelector(`.card[data-id="${cardId}"]`);
 
     if (card) {
-      const column = event.target.closest('.list'); 
+      const column = event.target.closest('.list');
 
       if (column) {
         column.appendChild(card);
 
-        
+
         this.updateCardColumn(cardId, column.dataset.id);
       }
     }
@@ -63,7 +63,7 @@ export default class extends Controller {
   updateCardColumn(cardId, columnId) {
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = `/cards/${cardId}`;
+    form.action = `/columns/${columnId}/cards/${cardId}`;
 
     const input = document.createElement('input');
     input.type = 'hidden';

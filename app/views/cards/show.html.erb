@@ -1,16 +1,19 @@
-<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-  <h1 class="text-2xl font-bold mb-4"><%= @card.title %></h1>
+<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-xl">
+  <h1 class="text-2xl font-bold mb-4 text-center"><%= @card.title %></h1>
 
   <div class="relative" data-controller="menu">
-    <button id="menu-button" class="text-gray-400 hover:text-gray-600 focus:outline-none" aria-expanded="true" aria-haspopup="true" data-action="click->menu#toggle">
+    <button id="menu-button" class="absolute top-0 right-0 mt-2 mr-2 text-gray-400 hover:text-gray-600 focus:outline-none" aria-expanded="true" aria-haspopup="true" data-action="click->menu#toggle">
       •••
     </button>
+
     <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" data-menu-target="dropdown">
+
       <div class="py-1" role="none">
-        <%= link_to 'Edit', edit_card_path(@card), class: "text-gray-700 block px-4 py-2 text-sm", role: "menuitem" %>
-        <%= form_with model: @card, method: :delete, data: { turbo_confirm: 'Are you sure you want to delete this card?' }, class: "inline-block" do |form| %>
-          <button type="submit" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Put in the trash</button>
-        <% end %>
+      <div class="flex flex-col gap-2">
+        <%= link_to 'Edit', edit_column_card_path(@column, @card), class: "text-blue-700 block px-4 py-2 hover:text-blue-700 text-sm " , role: "menuitem" %>
+        
+        <%= button_to "Delete", column_card_path(@column, @card), method: :delete, class: "text-red-500 px-4 py-2 hover:text-red-700 font-semibold", data: { turbo_confirm: "Are you sure you want to delete this column?" } %>
+        </div>
       </div>
     </div>
   </div>

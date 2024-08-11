@@ -1,22 +1,18 @@
 class CardsController < ApplicationController
   before_action :set_card, only: [:show, :edit, :update, :destroy]
+  before_action :set_column, only: [:new, :create, :show, :edit]
 
   def index
     @cards = Card.all
   end
 
+  def new
+    @card = Card.new
+  end
+  
   def create
     @card = Card.new(card_params)
-
-    column = Column.find_by(name: 'Triage')
-    if column
-      @card.column_id = column.id
-
-    else
-      redirect_to cards_path, alert: 'Triage column not found.'
-      return
-    end
-
+    @card.column_id = @column.id
     if @card.save
       redirect_to root_path
     else
@@ -28,13 +24,11 @@ class CardsController < ApplicationController
   end
 
   def show
-    @card
   end
 
   def update
     if @card.update(card_params)
       respond_to do |format|
-        # format.turbo_stream { render turbo_stream: turbo_stream.append("column_#{@card.column_id}", partial: "cards/card", locals: { card: @card }) }
         format.html { redirect_to root_path, notice: 'Card was successfully updated.' }
       end
     else
@@ -47,10 +41,8 @@ class CardsController < ApplicationController
 
   def destroy
     @card.destroy
-    respond_to do |format|
-      format.html { redirect_to root_path, notice: 'Card was successfully deleted.' }
-      format.turbo_stream { render turbo_stream: turbo_stream.remove("card-#{params[:id]}") }
-    end
+    redirect_to root_path, notice: 'Card was successfully deleted.'
+  
   end
   
 
@@ -60,6 +52,10 @@ class CardsController < ApplicationController
     @card = Card.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     redirect_to cards_url, alert: 'Card not found.'
+  end
+
+  def set_column
+    @column = Column.find(params[:column_id])
   end
 
   def card_params

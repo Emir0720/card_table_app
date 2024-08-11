@@ -1,13 +1,28 @@
-<div class="bg-[#FFFCF9] min-h-screen py-6">
-  <div class="container mx-auto px-6">
-    <h1 class="text-4xl font-bold text-center my-6">Intern Project</h1>
+<div class="bg-[#FCF8F3] min-h-screen flex flex-col">
+<div class="flex-grow">
+  <div class="container bg-[#FFFFFF] mx-auto px-4 md:px-4 lg:px-4 max-w-screen-lg shadow-lg rounded-lg ">
+<div class="flex justify-between items-center my-4 p-4">
+ <!-- Add Card Button -->
+  <button id="add-card-btn" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg" onclick="openModal('add-card-modal')">
+    + Add a card
+  </button>
+  <!-- title-->
+<h1 class="text-4xl font-bold text-center flex-grow hover:underline">Intern Project</h1>
+</div>
+  
+<div class="w-full border-t border-gray-300 mb-4"></div>
 
-    <!-- Add Card Button -->
-    <div class="flex justify-start items-center mb-4">
-      <button id="add-card-btn" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="openModal('add-card-modal')">
-        + Add a card
-      </button>
-    </div>
+
+<!-- Add Card Modal -->
+<div id="add-card-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('add-card-modal')">&times;</span>
+    <h2 class="text-2xl font-bold mb-4 text-left">Add a new card</h2>
+    <%= render "cards/form" %>
+  </div>
+</div>
+
+
     <!-- Static Columns -->
     <div class="grid grid-cols-3 gap-4 mb-8" data-controller="column-menu">
       <% @static_columns = ["Triage", "Not Now", "Done"] %>
@@ -15,22 +30,13 @@
         <% column = @columns.find { |c| c.name == column_name } %>
         <% if column %>
           <div class="relative bg-white p-4 rounded-lg shadow-md list" data-id="<%= column.id %>" data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
-            <div class="absolute top-2 right-2 cursor-pointer" data-action="click->column-menu#toggleMenu">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h12M6 6h12m-6 12h6" />
-              </svg>
-            </div>
-            <div class="column-menu hidden" data-column-menu-target="menu">
-              <div class="column-menu-item" data-action="click->column-menu#addCard">Add a card</div>
-              <div class="column-menu-item" data-action="click->column-menu#rename">Rename</div>
-            </div>
             <h2 class="text-xl font-bold mb-4">
               <%= link_to column.name, column_path(column) %> (<%= column.cards.count %>)
             </h2>
             <div class="cards" data-column-id="<%= column.id %>">
               <% column.cards.each do |card| %>
                 <div id="card-<%= card.id %>" class="card bg-white p-4 rounded-lg mb-4 border border-gray-300 shadow-md" draggable="true" data-id="<%= card.id %>" style="border: 2px solid gray; border-radius: 4px;">
-                  <%= link_to card.title, card_path(card), class: "font-semibold text-lg" %>
+                  <%= link_to card.title, column_card_path(column.id, card.id), class: "font-semibold text-lg" %>
                   <p class="text-sm text-gray-600 mt-2">By <%= card.assigned_to %>, <%= time_ago_in_words(card.created_at) %> ago</p>
                   <p class="text-xs text-gray-500 mt-1"><%= card.due_on ? card.due_on.strftime("%B %d, %Y") : "No due date" %></p>
                 </div>
@@ -40,96 +46,79 @@
         <% end %>
       <% end %>
     </div>
-    
-
-    <!-- Add Column Button -->
     <div class="w-full border-t border-gray-300 mb-4"></div>
 
-    <div class="flex justify-start">
-      <button id="add-column-btn" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="openModal('add-column-modal')">
-        + Add a column
+    <!-- Add Column Button -->
+    <div class="flex justify-end">
+      <button id="add-column-btn" class="bg-[#2377D2] hover:bg-blue-700 text-white font-bold py-1 px-3 rounded-full" onclick="openModal('add-column-modal')">
+        + 
       </button>
     </div>
 
-    <!-- Modals -->
-    <div id="add-card-modal" class="modal hidden">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('add-card-modal')">&times;</span>
-    <h2 class="text-2xl font-bold mb-4 text-left">Add a new card</h2>
-    <%= form_with model: Card.new, url: cards_path, local: true, id: "new-card-form" do |form| %>
-      <%= form.hidden_field :column_id, id: 'card-column-id' %>
-      <div class="mb-4">
-        <%= form.label :title, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
-        <%= form.text_field :title, placeholder: "Type a card title...", class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
+    <div id="add-column-modal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('add-column-modal')">&times;</span>
+        <h2 class="text-2xl font-bold mb-4 text-left">Add a new column</h2>
+        <%= form_with model: Column.new, url: columns_path, local: true, id: "new-column-form" do |form| %>
+          <div class="mb-4">
+            <%= form.label :name, "Name this column", class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
+            <%= form.text_field :name, class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
+          </div>
+          <div class="mb-4">
+            <%= form.label :description, "Add an optional description", class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
+            <%= form.text_area :description, class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
+          </div>
+          <div class="mt-4 flex justify-between">
+            <%= form.submit "Save column", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg" %>
+            <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg" onclick="closeModal('add-column-modal')">
+              Cancel
+            </button>
+          </div>
+        <% end %>
       </div>
-      <div class="mb-4">
-        <%= form.label :assigned_to, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
-        <%= form.text_field :assigned_to, placeholder: "Type names to assign...", class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
-      </div>
-      <div class="mb-4">
-        <%= form.label :due_on, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
-        <%= form.date_field :due_on, placeholder: "Select a due date", class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
-      </div>
-      <div class="mb-4">
-        <%= form.label :description, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
-        <%= form.text_area :description, placeholder: "Describe your card here...", rows: 4, class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
-      </div>
-      <div class="mt-4 flex justify-between">
-        <%= form.submit "Save card", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg" %>
-        <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg" onclick="closeModal('add-card-modal')">
-          Cancel
-        </button>
-      </div>
-    <% end %>
-  </div>
-</div>
+    </div>
 
-
-<div id="add-column-modal" class="modal hidden">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('add-column-modal')">&times;</span>
-    <h2 class="text-2xl font-bold mb-4 text-left"><%= @column.new_record? ? "Add Column" : "Rename Column" %></h2>
-    <%= form_with model: @column, url: @column.new_record? ? columns_path : column_path(@column), local: true, method: @column.new_record? ? :post : :patch, id: "rename-column-form" do |form| %>
-      <%= form.hidden_field :id, id: 'column_id' %>
-      <div class="mb-4">
-        <%= form.label :name, "Column Name", class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
-        <%= form.text_field :name, class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm", id: 'column_name' %>
-      </div>
-      <div class="mb-4">
-        <%= form.label :description, "Description", class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
-        <%= form.text_area :description, class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>
-      </div>
-      <div class="mt-4 flex justify-between">
-        <%= form.submit @column.new_record? ? "Add column" : "Save changes", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg" %>
-        <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg" onclick="closeModal('add-column-modal')">
-          Cancel
-        </button>
-      </div>
-    <% end %>
-  </div>
-</div>
-
-
-
-    <!-- Dynamic Columns -->
-    <div class="flex flex-wrap space-x-4 mt-8" data-controller="drag-drop column-menu">
+   
+<!-- Dynamic Columns -->
+<div class="flex flex-wrap space-x-4 mt-8" data-controller="drag-drop column-menu">
   <% (@columns - @columns.select { |c| @static_columns.include?(c.name) }).each do |column| %>
-    <div class="relative flex-1 bg-white p-4 rounded-lg shadow-md list" data-id="<%= column.id %>" data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
+    <div class="relative flex-1 <%= column.color %> bg-white p-4 rounded-lg shadow-md list"
+         data-id="<%= column.id %>"
+         data-column-menu-target="column" 
+         data-controller="column-menu"
+         data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
+      
       <div class="absolute top-2 right-2 cursor-pointer" data-action="click->column-menu#toggleMenu">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h12M6 6h12m-6 12h6" />
         </svg>
       </div>
 
-      <div class="column-menu hidden" data-column-menu-target="menu">
-  <div class="column-menu-item" data-action="click->column-menu#addCard">Add a card</div>
-  <div class="column-menu-item" data-action="click->column-menu#rename">Rename</div>
-  <div class="column-menu-item">
-    <%= button_to "Delete", column_path(column), method: :delete, class: "text-red-500 hover:text-red-700 font-semibold", data: { turbo_confirm: "Are you sure you want to delete this column?" } %>
-  </div>
-</div>
+      <div class="column-menu hidden" data-controller="column-menu">
+        <!-- Color Picker -->
+        <div class="flex space-x-2 mt-2">
+          <div class="w-6 h-6 bg-blue-500 rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-blue-500"></div>
+          <div class="w-6 h-6 bg-red-500 rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-red-500"></div>
+          <div class="w-6 h-6 bg-orange-500 rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-orange-500"></div>
+          <div class="w-6 h-6 bg-yellow-500 rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-yellow-500"></div>
+          <div class="w-6 h-6 bg-purple-500 rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-purple-500"></div> 
+        </div>
 
+        <!-- Add a Card Column -->
+        <%= link_to "Add a card", new_column_card_path(column_id: column.id), class: "column-menu-item", data: {
+          turbo_frame: "new_card"
+        } %>
 
+        <!-- Rename Column -->
+        <div class="column-menu-item">
+          <%= link_to "Rename", edit_column_path(column), class: "text-blue-500 hover:text-blue-700" %>
+        </div>
+
+        <!-- Delete Column -->
+        <div class="column-menu-item">
+          <%= button_to "Delete", column_path(column), method: :delete, class: "text-red-500 hover:text-red-700 font-semibold", data: { turbo_confirm: "Are you sure you want to delete this column?" } %>
+        </div>
+      </div>
 
       <h2 class="text-xl font-bold mb-4">
         <%= link_to column.name, column_path(column) %> (<%= column.cards.count %>)
@@ -137,7 +126,7 @@
       <div class="cards" data-column-id="<%= column.id %>">
         <% column.cards.each do |card| %>
           <div id="card-<%= card.id %>" class="card bg-white p-4 rounded-lg mb-4 border border-gray-300 shadow-md" draggable="true" data-id="<%= card.id %>" style="border: 2px solid gray; border-radius: 4px;">
-            <%= link_to card.title, card_path(card), class: "font-semibold text-lg" %>
+            <%= link_to card.title, column_card_path(column.id, card.id), class: "font-semibold text-lg" %>
             <p class="text-sm text-gray-600 mt-2">By <%= card.assigned_to %>, <%= time_ago_in_words(card.created_at) %> ago</p>
             <p class="text-xs text-gray-500 mt-1"><%= card.due_on ? card.due_on.strftime("%B %d, %Y") : "No due date" %></p>
           </div>
@@ -146,3 +135,7 @@
     </div>
   <% end %>
 </div>
+
+
+<%= turbo_frame_tag "new_card" do %>
+<% end %>

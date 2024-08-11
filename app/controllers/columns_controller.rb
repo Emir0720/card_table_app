@@ -1,12 +1,13 @@
 class ColumnsController < ApplicationController
-  before_action :set_column, only: [:show, :edit, :update, :destroy, :rename]
+  before_action :set_column, only: [:show, :edit, :update, :update_color, :destroy, :rename]
 
   def index
     @columns = Column.all
   end
 
   def show
-    # @column already set by before_action
+    @column = Column.find(params[:id])
+    @cards = @column.cards.order(created_at: :asc)
   end
 
   def new
@@ -38,17 +39,22 @@ class ColumnsController < ApplicationController
 
   def update
     if @column.update(column_params)
-      respond_to do |format|
-        format.html { redirect_to column_path(@column), notice: 'Column was successfully updated.' }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("column-#{@column.id}", partial: "columns/column", locals: { column: @column }) }
-      end
+      redirect_to root_path, notice: 'Column was successfully updated.'
     else
-      respond_to do |format|
-        format.html { render :edit }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("column-form", partial: "columns/form", locals: { column: @column }) }
-      end
+      render :edit
     end
   end
+
+
+  def update_color
+    @column = Column.find(params[:id])
+    if @column.update(color: params[:column][:color])
+      redirect_to root_path, notice: 'Column color was successfully updated.'
+    else
+      redirect_to root_path, alert: 'Failed to update column color.'
+    end
+  end
+  
 
   def rename
     @column = Column.find(params[:id])
@@ -71,11 +77,7 @@ class ColumnsController < ApplicationController
   private
 
   def set_column
-    @column = Column.find_by(id: params[:id])
-    if @column.nil?
-      logger.error "Column with ID #{params[:id]} not found"
-      redirect_to root_path, alert: "Column not found."
-    end
+    @column = Column.find(params[:id])
   end
 
   def column_params
