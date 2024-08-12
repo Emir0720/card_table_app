@@ -74,3 +74,10 @@
 .column-menu-item:not(:last-child) {
   border-bottom: 1px solid #ddd;
 }
+
+.rotate-column {
+  width: 150px; /* Dönmüş sütunun genişliği */
+  transform: rotate(90deg); /* 90 derece döndür */
+  transform-origin: right center; /* Dönüş noktası */
+  height: 50px; /* Dönmüş sütunun yüksekliği */
+}

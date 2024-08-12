@@ -41,6 +41,8 @@ export default class extends Controller {
   }
 
   handleDrop(event) {
+
+
     event.preventDefault();
     event.stopPropagation();
     event.target.classList.remove('drag-over');
@@ -50,10 +52,10 @@ export default class extends Controller {
 
     if (card) {
       const column = event.target.closest('.list');
-
       if (column) {
-        column.appendChild(card);
-
+        if (!column.classList.contains('static-column')) {
+          column.appendChild(card);
+        }
 
         this.updateCardColumn(cardId, column.dataset.id);
       }
