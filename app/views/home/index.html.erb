@@ -1,6 +1,6 @@
 <div class="bg-[#FCF8F3] min-h-screen flex flex-col">
   <div class="flex-grow">
-<div class="container bg-[#FFFFFF] mx-auto px-8 md:px-10 lg:px-12 max-w-screen-xl shadow-lg rounded-lg">
+<div class="container bg-[#FFFFFF] mx-auto px-8 md:px-10 lg:px-0 max-w-screen-xl shadow-lg rounded-lg">
       <div class="flex justify-between items-center my-4 p-4">
       <!-- Add Card Button -->
         <button id="add-card-btn" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg" onclick="openModal('add-card-modal')">
@@ -32,16 +32,16 @@
         <!-- Triage Column -->
         <% column = @columns.find { |c| c.name == "Triage" } %>
         <% if column %>
-          <div class="bg-white p-4 rounded-lg shadow-lg flex-1   list relative" 
+          <div class="bg-white p-2 rounded-lg shadow-lg flex-1 list relative" 
           data-id="<%= column.id %>"
            data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
-            <h2 class="text-xl font-bold mb-4">
+            <h2 class="text-2xl font-bold mb-6">
               <%= link_to column.name, column_path(column) %> (<%= column.cards.count %>)
             </h2>
-            <div class="cards" data-column-id="<%= column.id %>">
+            <div class="cards flex flex-wrap gap-4" data-column-id="<%= column.id %>">
               <% unless ["Not Now", "Done"].include?(column.name) %>
                 <% column.cards.each do |card| %>
-                  <div id="card-<%= card.id %>" class="card bg-white p-4 rounded-lg mb-4 border border-gray-300 shadow-md" draggable="true" data-id="<%= card.id %>" style="border: 2px solid gray; border-radius: 4px;">
+                  <div id="card-<%= card.id %>" class="card bg-white p-6 rounded-lg border border-gray-300 shadow-lg flex-shrink-0 transition duration-300 ease-in-out transform hover:scale-105" draggable="true" data-id="<%= card.id %>" style="border: 2px solid gray; border-radius: 4px;">
                     <%= link_to card.title, column_card_path(column.id, card.id), class: "font-semibold text-lg" %>
                     <p class="text-sm text-gray-600 mt-2">By <%= card.assigned_to %>, <%= time_ago_in_words(card.created_at) %> ago</p>
                     <p class="text-xs text-gray-500 mt-1"><%= card.due_on ? card.due_on.strftime("%B %d, %Y") : "No due date" %></p>
@@ -56,7 +56,7 @@
         <div>
           <% column = @columns.find { |c| c.name == "Not Now" } %>
           <% if column %>
-            <div class="bg-white p-2 rounded-lg shadow-md text-center h-[45vh] flex justify-center items-center list static-column"
+            <div id="not-now-column" class="bg-[#F2F2F2] p-2 text-center flex justify-center items-center list static-column"
              data-controller="drag-drop"
              data-id="<%= column.id %>" 
              data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
@@ -68,11 +68,11 @@
         </div>
       </div>
 
-<div class="w-full border-t border-gray-300 mt-10"></div>
+<div class="w-full border-t border-black-300  mb-2"></div>
 
 
           <!-- Add Column Button -->
-          <div class="flex justify-end">
+          <div class="flex justify-start">
             <button id="add-column-btn" class="bg-[#2377D2] hover:bg-blue-700 text-white font-bold py-1 px-3 rounded-full" onclick="openModal('add-column-modal')">
               + 
             </button>
@@ -105,9 +105,8 @@
         
           <!-- Dynamic Columns -->
         <div class="flex flex-wrap space-x-4 mt-8" data-controller="drag-drop column-menu">
-           <!-- Done Column -->
         <% (@columns - @columns.select { |c| @static_columns.include?(c.name) }).each do |column| %>
-          <div class="relative flex-1 <%= column.color.nil? ? "bg-white" : column.color %> p-4 rounded-lg shadow-md list"
+          <div class="relative flex-1 <%= column.color.nil? ? "bg-white" : column.color %> p-4 rounded-lg shadow-lg list"
              data-controller="drag-drop"
               data-id="<%= column.id %>"
               data-column-menu-target="column" 
@@ -162,10 +161,11 @@
             </div>
           </div>
         <% end %>
-              <div>
-     <% column = @columns.find { |c| c.name == "Done" } %>
-    <% if column %>
-        <div class="bg-white p-2 rounded-lg shadow-md text-center h-[50vh] flex justify-center items-center list static-column" data-id="<%= column.id %>" data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
+        <!-- Done Column -->
+       <div>
+          <% column = @columns.find { |c| c.name == "Done" } %>
+          <% if column %>
+          <div class="bg-[#E4F8E2] p-2 text-center h-[50vh] flex justify-center items-center list static-column" data-id="<%= column.id %>" data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
 		
           <h2 class="text-xl font-bold rotate-90 ">
             <%= link_to column.name, column_path(column) %> (<%= column.cards.count %>)
