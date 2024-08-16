@@ -1,14 +1,18 @@
 <div class="bg-[#FCF8F3] min-h-screen flex flex-col">
   <div class="flex-grow">
-<div class="container bg-[#FFFFFF] mx-auto px-8 md:px-10 lg:px-0 max-w-screen-xl shadow-lg rounded-lg">
+<div class="container bg-[#FFFFFF] mx-auto px-8 md:px-10 lg:px-0 max-w-screen-xl shadow-lg rounded-lg flex flex-col mt-8 min-h-screen">
       <div class="flex justify-between items-center my-4 p-4">
       <!-- Add Card Button -->
         <button id="add-card-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg" onclick="openModal('add-card-modal')">
           + Add a card
         </button>
+        
         <!-- title-->
-      <h1 class="text-4xl font-bold text-center flex-grow hover:underline">Intern Project
-      </h1>
+        <h1 class="text-5xl font-bold text-gray-900 text-center relative group tracking-wide">
+            Intern Project
+            <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-500 ease-out"></span>
+        </h1>
+
       <!-- Three Dots Menu -->
   <button id="menu-btn" class="text-black-500 hover:text-black-700  flex items-center justify-center">
     <span class="text-5xl leading-none">...</span>
@@ -16,7 +20,7 @@
       </div>
 
       
-      <div class="w-full border-t border-gray-300 mb-4"></div>
+      <div class="w-full border-t border-gray-300 "></div>
       <!-- Add Card Modal -->
       <div id="add-card-modal" class="modal hidden">
         <div class="modal-content">
@@ -33,7 +37,7 @@
         <!-- Triage Column -->
         <% column = @columns.find { |c| c.name == "Triage" } %>
         <% if column %>
-          <div class="bg-white p-2 rounded-lg shadow-lg flex-1 list relative" 
+          <div class="bg-white p-2  flex-1 list relative" 
           data-id="<%= column.id %>"
            data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
             <h2 class="text-2xl font-bold mb-6">
@@ -59,7 +63,7 @@
         <div>
           <% column = @columns.find { |c| c.name == "Not Now" } %>
           <% if column %>
-            <div id="not-now-column" class="bg-[#F2F2F2] p-2 text-center flex justify-center items-center list static-column"
+            <div id="not-now-column" class="bg-[#F2F2F2] w-[70px] p-2 text-center flex justify-center items-center list static-column whitespace-nowrap"
              data-controller="drag-drop"
              data-id="<%= column.id %>" 
              data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
@@ -71,7 +75,7 @@
         </div>
       </div>
 
-<div class="w-full border-t border-grey-300  mb-2"></div>
+<div class="w-full border-t border-grey-300"></div>
 
 
         <div>
@@ -100,9 +104,9 @@
 
         
           <!-- Dynamic Columns -->
-        <div class="flex flex-wrap space-x-4 mt-8" data-controller="drag-drop column-menu">
+        <div class="flex flex-wrap space-x-4 " data-controller="drag-drop column-menu">
         <% (@columns - @columns.select { |c| @static_columns.include?(c.name) }).each do |column| %>
-          <div class="relative flex-1 <%= column.color.nil? ? "bg-white" : column.color %> p-4 rounded-lg shadow-lg list"
+          <div class="relative flex-1 mt-10 ml-5 <%= column.color.nil? ? "bg-white" : column.color %> p-4 rounded-lg shadow-lg list"
              data-controller="drag-drop"
               data-id="<%= column.id %>"
               data-column-menu-target="column" 
@@ -128,9 +132,11 @@
               </div>
 
               <!-- Add a Card Column -->
+              <div class="column-menu-item ">
               <%= link_to "Add a card", new_column_card_path(column_id: column.id), class: "column-menu-item", data: {
                 turbo_frame: "new_card"
               } %>
+              </div>
 
               <!-- Rename Column -->
               <div class="column-menu-item">
@@ -158,29 +164,31 @@
           </div>
         <% end %>
 
+          <div>
          <!-- Add Column Button -->
-          <div class="flex justify-start">
+          <div class="flex justify-start mt-10">
             <button id="add-column-btn" class="bg-[#2377D2] hover:bg-blue-700 text-white font-bold py-1 px-3 rounded-full" onclick="openModal('add-column-modal')">
               + 
             </button>
           </div>
+          </div>
 
         <!-- Done Column -->
-       <div>
+      
+
           <% column = @columns.find { |c| c.name == "Done" } %>
           <% if column %>
-          <div class="bg-[#E4F8E2] p-2 text-center h-[60vh] flex justify-center items-center list static-column"
+          <div class="bg-[#E4F8E2] w-[70px] p-2 text-center flex justify-center items-center list static-column whitespace-nowrap"
          data-id="<%= column.id %>"
          data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
           <h2 class="text-xl font-bold rotate-90 ">
             <%= link_to column.name, column_path(column) %> (<%= column.cards.count %>)
           </h2>
-      </div>
-
+    
     <% end %>
 	</div>
-      </div>
-      </div>
+   </div>
+   </div>
   </div>
 </div>
 <%= turbo_frame_tag "new_card" do %>
