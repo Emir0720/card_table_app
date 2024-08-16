@@ -3,7 +3,7 @@
 <div class="container bg-[#FFFFFF] mx-auto px-8 md:px-10 lg:px-0 max-w-screen-xl shadow-lg rounded-lg">
       <div class="flex justify-between items-center my-4 p-4">
       <!-- Add Card Button -->
-        <button id="add-card-btn" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg" onclick="openModal('add-card-modal')">
+        <button id="add-card-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg" onclick="openModal('add-card-modal')">
           + Add a card
         </button>
         <!-- title-->
@@ -29,6 +29,7 @@
       <!-- Static Columns -->
       <div class="flex items-center" data-controller="column-menu">
         <% @static_columns = ["Triage", "Not Now", "Done"] %>
+
         <!-- Triage Column -->
         <% column = @columns.find { |c| c.name == "Triage" } %>
         <% if column %>
@@ -41,7 +42,7 @@
             <div class="cards flex flex-wrap gap-4" data-column-id="<%= column.id %>">
               <% unless ["Not Now", "Done"].include?(column.name) %>
                 <% column.cards.each do |card| %>
-                  <div id="card-<%= card.id %>" class="card bg-white p-6 rounded-lg border border-gray-300 shadow-lg flex-shrink-0 transition duration-300 ease-in-out transform hover:scale-105" draggable="true" data-id="<%= card.id %>" style="border: 2px solid gray; border-radius: 4px;">
+                  <div id="card-<%= card.id %>" class="card bg-white p-6 rounded-lg border border-gray-300 shadow-lg flex-shrink-0 transition duration-300 ease-in-out transform hover:scale-105" draggable="true" data-id="<%= card.id %>" style="border: 1px solid gray; border-radius: 4px;">
                     <%= link_to card.title, column_card_path(column.id, card.id), class: "font-semibold text-lg" %>
                     <p class="text-sm text-gray-600 mt-2">By <%= card.assigned_to %>, <%= time_ago_in_words(card.created_at) %> ago</p>
                     <p class="text-xs text-gray-500 mt-1"><%= card.due_on ? card.due_on.strftime("%B %d, %Y") : "No due date" %></p>
@@ -51,6 +52,8 @@
             </div>
           </div>
         <% end %>
+
+        
 
         <!-- Not Now Column -->
         <div>
@@ -68,15 +71,8 @@
         </div>
       </div>
 
-<div class="w-full border-t border-black-300  mb-2"></div>
+<div class="w-full border-t border-grey-300  mb-2"></div>
 
-
-          <!-- Add Column Button -->
-          <div class="flex justify-start">
-            <button id="add-column-btn" class="bg-[#2377D2] hover:bg-blue-700 text-white font-bold py-1 px-3 rounded-full" onclick="openModal('add-column-modal')">
-              + 
-            </button>
-          </div>
 
         <div>
           <div id="add-column-modal" class="modal hidden">
@@ -161,16 +157,26 @@
             </div>
           </div>
         <% end %>
+
+         <!-- Add Column Button -->
+          <div class="flex justify-start">
+            <button id="add-column-btn" class="bg-[#2377D2] hover:bg-blue-700 text-white font-bold py-1 px-3 rounded-full" onclick="openModal('add-column-modal')">
+              + 
+            </button>
+          </div>
+
         <!-- Done Column -->
        <div>
           <% column = @columns.find { |c| c.name == "Done" } %>
           <% if column %>
-          <div class="bg-[#E4F8E2] p-2 text-center h-[50vh] flex justify-center items-center list static-column" data-id="<%= column.id %>" data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
-		
+          <div class="bg-[#E4F8E2] p-2 text-center h-[60vh] flex justify-center items-center list static-column"
+         data-id="<%= column.id %>"
+         data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
           <h2 class="text-xl font-bold rotate-90 ">
             <%= link_to column.name, column_path(column) %> (<%= column.cards.count %>)
           </h2>
       </div>
+
     <% end %>
 	</div>
       </div>
