@@ -19,21 +19,21 @@ window.onclick = function(event) {
 }
 
 
-document.addEventListener("DOMContentLoaded", () => {
-  const triageColumn = document.querySelector(".list[data-id='9']");
-  const notNowColumn = document.getElementById("not-now-column");
+// document.addEventListener("DOMContentLoaded", () => {
+//   const triageColumn = document.querySelector(".list[data-id='9']");
+//   const notNowColumn = document.getElementById("not-now-column");
 
-  if (triageColumn && notNowColumn) {
-    const updateNotNowHeight = () => {
+//   if (triageColumn && notNowColumn) {
+//     const updateNotNowHeight = () => {
       
-      if (triageColumn.offsetHeight) {
-        notNowColumn.style.height = `${triageColumn.offsetHeight}px`;
-      }
-    };
-    updateNotNowHeight();
-    window.addEventListener("resize", updateNotNowHeight);
-    document.addEventListener("card:updated", updateNotNowHeight);
-  }
-});
+//       if (triageColumn.offsetHeight) {
+//         notNowColumn.style.height = `${triageColumn.offsetHeight}px`;
+//       }
+//     };
+//     updateNotNowHeight();
+//     window.addEventListener("resize", updateNotNowHeight);
+//     document.addEventListener("card:updated", updateNotNowHeight);
+//   }
+// });
 
   

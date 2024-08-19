@@ -3,21 +3,32 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static targets = ["menu", "renameForm", "column"];
 
+  connect() {
+    document.addEventListener("click", this.closeMenuOnClickOutside.bind(this));
+  }
+
+  disconnect() {
+    document.removeEventListener("click", this.closeMenuOnClickOutside.bind(this));
+  }
+
   toggleMenu(event) {
     event.preventDefault();
+    event.stopPropagation();
 
-    
-    this.menuTargets.forEach((menu) => {
-      if (menu !== event.currentTarget.nextElementSibling) {
-        menu.classList.remove("visible");
-      }
-    });
-
-    
+    // Toggle menü açma/kapama
     const targetMenu = event.currentTarget.nextElementSibling;
     if (targetMenu) {
       targetMenu.classList.toggle("visible");
     }
+  }
+
+  closeMenuOnClickOutside(event) {
+    // Menülerin her birini kontrol et
+    this.menuTargets.forEach((menu) => {
+      if (!menu.contains(event.target) && !event.target.closest("[data-action*='toggleMenu']")) {
+        menu.classList.remove("visible");
+      }
+    });
   }
 
  changeColor(event) {

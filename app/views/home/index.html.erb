@@ -63,14 +63,14 @@
         <div>
           <% column = @columns.find { |c| c.name == "Not Now" } %>
           <% if column %>
-            <div id="not-now-column" class="bg-[#F2F2F2] w-[70px] p-2 text-center flex justify-center items-center list static-column whitespace-nowrap"
+            <div class="bg-[#F2F2F2] w-[70px] p-2 text-center flex justify-center items-center list static-column whitespace-nowrap"
              data-controller="drag-drop"
              data-id="<%= column.id %>" 
              data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
               <h2 class="text-xl font-bold rotate-90">
               <%= link_to column.name, column_path(column) %> (<%= column.cards.count %>)
               </h2>
-            </div>
+            </div>  
           <% end %>
         </div>
       </div>
@@ -113,23 +113,22 @@
               data-controller="column-menu"
               data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
               <div class="absolute top-2 right-2 cursor-pointer" data-action="click->column-menu#toggleMenu">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-1200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h12M6 6h12m-6 12h6" />
               </svg>
             </div>
 
-            <div class="column-menu hidden" data-controller="column-menu">
+       <div class="column-menu hidden bg-[F7F7F7]" data-controller="column-menu">
               <!-- Color Picker -->
-              <div class="flex space-x-2 mt-2">
+        <div class="flex space-x-2 mt-2">
 
-              <div class="w-6 h-6 bg-white border border-black rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-white"></div>
-
-                <div class="w-6 h-6 bg-blue-500 rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-blue-500"></div>
-                <div class="w-6 h-6 bg-red-500 rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-red-500"></div>
-                <div class="w-6 h-6 bg-orange-500 rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-orange-500"></div>
-                <div class="w-6 h-6 bg-yellow-500 rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-yellow-500"></div>
-                <div class="w-6 h-6 bg-purple-500 rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-purple-500"></div> 
-              </div>
+             <div class="w-6 h-6 bg-white border border-black rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-white"></div>
+             <div class="w-6 h-6 bg-[#E1EFFC] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#E1EFFC]"></div>
+             <div class="w-6 h-6 bg-[#FFE4F7] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#FFE4F7]"></div>
+             <div class="w-6 h-6 bg-[#FAF785] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#FAF785]"></div>
+            <div class="w-6 h-6 bg-[#E4F8E2] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#E4F8E2]"></div>
+             <div class="w-6 h-6 bg-[#F2EDFF] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#F2EDFF]"></div> 
+       </div>
 
               <!-- Add a Card Column -->
               <div class="column-menu-item ">
@@ -185,11 +184,11 @@
             <%= link_to column.name, column_path(column) %> (<%= column.cards.count %>)
           </h2>
     
-    <% end %>
-	</div>
-   </div>
-   </div>
-  </div>
-</div>
-<%= turbo_frame_tag "new_card" do %>
-<% end %>
+            <% end %>
+          </div>
+          </div>
+          </div>
+          </div>
+        </div>
+        <%= turbo_frame_tag "new_card" do %>
+        <% end %>
