@@ -19,6 +19,7 @@ class CardsController < ApplicationController
       respond_to do |format|
         format.html { render :new }
         format.turbo_stream { render turbo_stream: turbo_stream.replace('new_card_form', partial: 'cards/form', locals: { card: @card }) }
+        
       end
     end
   end

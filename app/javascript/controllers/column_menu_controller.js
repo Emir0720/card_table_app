@@ -31,7 +31,7 @@ export default class extends Controller {
     });
   }
 
- changeColor(event) {
+  changeColor(event) {
     const color = event.target.dataset.color;
     const columnId = this.element.closest('[data-id]').dataset.id;
 
@@ -60,15 +60,15 @@ export default class extends Controller {
     form.submit();
   }
 
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
   addCard(event) {
-    event.preventDefault(); 
+    event.preventDefault();
 
     const columnId = event.currentTarget.dataset.columnId;
     const url = `/columns/${columnId}/cards/new`;
@@ -90,11 +90,11 @@ export default class extends Controller {
     }
   }
 
-  
+
   toggleRenameForm(event) {
     event.preventDefault();
-    
-    
+
+
     const form = this.renameFormTarget;
     if (form) {
       form.classList.toggle("hidden");
@@ -103,11 +103,11 @@ export default class extends Controller {
     }
   }
 
-  
+
   rename(event) {
     event.preventDefault();
 
-    
+
     const form = this.renameFormTarget.querySelector('form');
 
     if (form) {
@@ -117,11 +117,11 @@ export default class extends Controller {
     }
   }
 
-  
+
   delete(event) {
     const columnId = event.target.closest('.list').dataset.id;
     const deleteForm = document.getElementById(`delete-column-${columnId}`);
-    
+
     if (deleteForm) {
       deleteForm.submit();
     } else {
@@ -129,7 +129,7 @@ export default class extends Controller {
     }
   }
 
-  
+
   openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -140,7 +140,7 @@ export default class extends Controller {
     }
   }
 
-  
+
   closeModal(event) {
     const modal = event.target.closest('.modal');
     if (modal) {

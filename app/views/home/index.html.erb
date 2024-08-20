@@ -1,9 +1,10 @@
 <div class="bg-[#FCF8F3] min-h-screen flex flex-col">
   <div class="flex-grow">
 <div class="container bg-[#FFFFFF] mx-auto px-8 md:px-10 lg:px-0 max-w-screen-xl shadow-lg rounded-lg flex flex-col mt-8 min-h-screen">
+  
       <div class="flex justify-between items-center my-4 p-4">
       <!-- Add Card Button -->
-        <button id="add-card-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg" onclick="openModal('add-card-modal')">
+        <button id="add-card-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" onclick="openModal('add-card-modal')">
           + Add a card
         </button>
         
@@ -31,7 +32,7 @@
       </div>
 
       <!-- Static Columns -->
-      <div class="flex items-center" data-controller="column-menu">
+      <div class="flex items-center bg-[#F2F2F2]" data-controller="column-menu">
         <% @static_columns = ["Triage", "Not Now", "Done"] %>
 
         <!-- Triage Column -->
@@ -48,8 +49,8 @@
                 <% column.cards.each do |card| %>
                   <div id="card-<%= card.id %>" class="card bg-white p-6 rounded-lg border border-gray-300 shadow-lg flex-shrink-0 transition duration-300 ease-in-out transform hover:scale-105" draggable="true" data-id="<%= card.id %>" style="border: 1px solid gray; border-radius: 4px;">
                     <%= link_to card.title, column_card_path(column.id, card.id), class: "font-semibold text-lg" %>
-                    <p class="text-sm text-gray-600 mt-2">By <%= card.assigned_to %>, <%= time_ago_in_words(card.created_at) %> ago</p>
-                    <p class="text-xs text-gray-500 mt-1"><%= card.due_on ? card.due_on.strftime("%B %d, %Y") : "No due date" %></p>
+                    <p class="text-sm text-gray-600 mt-2">By <%= card.assigned_to %>, <%= time_ago_in_words(card.created_at) %> ago <%= card.due_on ? card.due_on.strftime("%B %d, %Y") : "No due date" %></p>
+                   
                   </div>
                 <% end %>
               <% end %>
@@ -57,17 +58,15 @@
           </div>
         <% end %>
 
-        
-
         <!-- Not Now Column -->
         <div>
           <% column = @columns.find { |c| c.name == "Not Now" } %>
           <% if column %>
-            <div class="bg-[#F2F2F2] w-[70px] p-2 text-center flex justify-center items-center list static-column whitespace-nowrap"
+            <div class=" w-[65px] p-2 text-center flex justify-center items-center list static-column whitespace-nowrap"
              data-controller="drag-drop"
              data-id="<%= column.id %>" 
              data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
-              <h2 class="text-xl font-bold rotate-90">
+              <h2 class="text-xl font-medium rotate-90">
               <%= link_to column.name, column_path(column) %> (<%= column.cards.count %>)
               </h2>
             </div>  
@@ -121,7 +120,6 @@
        <div class="column-menu hidden bg-[F7F7F7]" data-controller="column-menu">
               <!-- Color Picker -->
         <div class="flex space-x-2 mt-2">
-
              <div class="w-6 h-6 bg-white border border-black rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-white"></div>
              <div class="w-6 h-6 bg-[#E1EFFC] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#E1EFFC]"></div>
              <div class="w-6 h-6 bg-[#FFE4F7] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#FFE4F7]"></div>
@@ -173,17 +171,14 @@
           </div>
 
         <!-- Done Column -->
-      
-
           <% column = @columns.find { |c| c.name == "Done" } %>
           <% if column %>
-          <div class="bg-[#E4F8E2] w-[70px] p-2 text-center flex justify-center items-center list static-column whitespace-nowrap"
+          <div class="bg-[#E4F8E2] w-[65px] p-2 text-center flex justify-center items-center list static-column whitespace-nowrap"
          data-id="<%= column.id %>"
          data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
-          <h2 class="text-xl font-bold rotate-90 ">
+          <h2 class="text-xl font-medium rotate-90 ">
             <%= link_to column.name, column_path(column) %> (<%= column.cards.count %>)
           </h2>
-    
             <% end %>
           </div>
           </div>

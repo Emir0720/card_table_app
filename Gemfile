@@ -15,7 +15,6 @@ gem "stimulus-rails"
 gem "jbuilder"
 gem "tzinfo-data", platforms: %i[windows jruby]
 gem "bootsnap", require: false
-gem "jsbundling-rails", "~> 1.3"
 
 group :development, :test do
   gem "debug", platforms: %i[mri windows]
