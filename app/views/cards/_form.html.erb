@@ -1,4 +1,4 @@
-<%= form_with model: [@column.id, @card], url: column_cards_path(@column.id), local: false, id: "new-card-form" do |form| %>
+<%= form_with model: [@column.id, @card], url: column_cards_path(@column.id), local: true, id: "new-card-form" do |form| %>
   <div class="mb-4">
     <%= form.label :title, class: "block text-gray-700 text-sm font-bold mb-2 text-left" %>
     <%= form.text_field :title, placeholder: "Type a card title...", class: "w-full p-2 border border-gray-300 rounded-lg shadow-sm" %>

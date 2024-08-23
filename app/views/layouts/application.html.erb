@@ -21,11 +21,10 @@
         <% end %>
       </div>
     </nav>
-    
     <%= yield %>
 
     <!-- Add Card Modal -->
-    <div id="add-card-modal" class="modal hidden">
+    <div id="add-card-modal1" class="modal hidden">
       <form>
         <input type="hidden" name="column_id" />
         <input type="text" name="card_name" />
@@ -52,5 +51,8 @@
       </form>
       <button data-action="click->column-menu#closeModal" data-column-menu-target="close">Close</button>
     </div>
+    <%= turbo_frame_tag "modal" do %>
+    
+    <% end %>
   </body>
 </html>

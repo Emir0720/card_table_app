@@ -4,9 +4,12 @@
   
       <div class="flex justify-between items-center my-4 p-4">
       <!-- Add Card Button -->
-        <button id="add-card-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" onclick="openModal('add-card-modal')">
+        <%= link_to new_column_card_path(Column.find_by(name: "Triage")),
+            class: "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full",
+            data: { turbo_frame: "modal" } do %>
           + Add a card
-        </button>
+        <% end %>
+
         
         <!-- title-->
         <h1 class="text-5xl font-bold text-gray-900 text-center relative group tracking-wide">
@@ -23,7 +26,7 @@
       
       <div class="w-full border-t border-gray-300 "></div>
       <!-- Add Card Modal -->
-      <div id="add-card-modal" class="modal hidden">
+      <div id="add-card-modal1" class="modal hidden">
         <div class="modal-content">
           <span class="close" onclick="closeModal('add-card-modal')">&times;</span>
           <h2 class="text-2xl font-bold mb-4 text-left">Add a new card</h2>
@@ -129,11 +132,11 @@
        </div>
 
               <!-- Add a Card Column -->
-              <div class="column-menu-item ">
-              <%= link_to "Add a card", new_column_card_path(column_id: column.id), class: "column-menu-item", data: {
-                turbo_frame: "new_card"
-              } %>
-              </div>
+              <div class="column-menu-item">
+              <%= link_to "Add a card", new_column_card_path(column_id: column.id), 
+              class: "column-menu-item", 
+              data: {turbo_frame: "modal"} %>
+               </div>
 
               <!-- Rename Column -->
               <div class="column-menu-item">
@@ -185,5 +188,4 @@
           </div>
           </div>
         </div>
-        <%= turbo_frame_tag "new_card" do %>
-        <% end %>
+       

@@ -6,7 +6,8 @@ window.openModal = function (modalId) {
 }
 
 window.closeModal = function (modalId) {
-  document.getElementById(modalId).style.display = "none";
+  var myDocument = document.getElementById(modalId).style.display = "none"
+  console.log(myDocument)
 }
 
 window.onclick = function (event) {

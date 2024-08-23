@@ -1,3 +1,9 @@
-<%= turbo_frame_tag "new_card" do %>
-  <%= render "form", card: @card %>
+<%= turbo_frame_tag turbo_frame_request_id do %>
+  <div id="add-card-modal" class="modal">
+    <div class="modal-content">
+      <span class="close"></span>
+      <h2 class="text-2xl font-bold mb-4 text-left">Add a new card to Triage</h2>
+      <%= render "form", card: @card %>
+    </div>
+  </div>
 <% end %>

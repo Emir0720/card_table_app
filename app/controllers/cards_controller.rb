@@ -14,7 +14,11 @@ class CardsController < ApplicationController
     @card = Card.new(card_params)
     @card.column_id = @column.id
     if @card.save
-      redirect_to root_path
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: "<turbo-stream action=\"refresh\"></turbo-stream>" }
+        
+      end
+
     else
       respond_to do |format|
         format.html { render :new }
