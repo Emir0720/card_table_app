@@ -3,16 +3,13 @@
   <head>
     <title>CardTableApp</title>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'%>
     <%= javascript_importmap_tags %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= turbo_refreshes_with(method: :morph, scroll: :preserve) %>
-
     <%= yield :head %>
   </head>
-
   <body>
     <nav>
       <div class="container mx-auto flex justify-between items-center">

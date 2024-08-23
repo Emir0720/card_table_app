@@ -15,8 +15,6 @@ class CardsController < ApplicationController
     @card.column_id = @column.id
     if @card.save
       render turbo_stream: turbo_stream.turbo_stream_refresh_tag(request_id: nil)
-
-
     else
       respond_to do |format|
         format.html { render :new }

@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   root 'home#index'
 
   resources :columns do
-    resources :cards 
+    resources :cards do
+      resource :move, only: [:update], controller: "cards/moves"
+    end
     member do
       put 'rename', to: 'columns#rename', as: 'rename'
       post 'update_color', to: 'columns#update_color'

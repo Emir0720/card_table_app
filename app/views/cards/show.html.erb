@@ -20,13 +20,67 @@
       </div>
     </div>
 
-    <div class="mb-4">
-      <p class="text-gray-600">Column: <span class="font-semibold"><%= @card.column.name %></span></p>
-      <p class="text-gray-600">Added by <span class="font-semibold"><%= @card.assigned_to %></span> <%= time_ago_in_words(@card.created_at) %> ago</p>
-      <p class="text-gray-600">Assigned to: <span class="font-semibold"><%= @card.assigned_to %></span></p>
-      <p class="text-gray-600">Due on: <span class="font-semibold"><%= @card.due_on.strftime("%a, %b %d") %></span></p>
-      <p class="text-gray-600">Notes: <span class="font-semibold"><%= @card.description %></span></p>
-    </div>
+
+           
+
+
+    <div class="mb-6 p-6 bg-white rounded-lg shadow-lg border border-gray-200">
+
+        <!-- column Section -->
+       <div class="mb-4 flex items-center">
+          <p class="text-gray-600 mr-2">Column:</p>
+         <%= form_with model: @card, url: column_card_move_path(column_id: @card.column_id, card_id: @card.id), method: :put, local: true, class: "flex items-center space-x-2" do |form| %>
+            <%= form.select :column_id, Column.all.collect { |c| [c.name, c.id] }, { selected: @card.column_id }, class: "shadow-sm border border-gray-300 rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" %>
+            <%= form.submit "Move Card", class: "bg-blue-600 text-white text-xs font-semibold py-1 px-3 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
+          <% end %>
+        </div>
+
+  <!-- Added By Section -->
+  <div class="flex items-center mb-4">
+    <svg class="w-6 h-6 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h1v4zm0 2h-1v-1h1v1zm-6.293-5.293a1 1 0 011.414 0L13 13.414l1.293-1.293a1 1 0 011.414 1.414l-2 2a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z" />
+    </svg>
+    <p class="text-gray-800 text-sm">
+      Added by 
+      <span class="font-semibold text-blue-600"><%= @card.assigned_to %></span>
+      <span class="text-gray-500">(<%= time_ago_in_words(@card.created_at) %> ago)</span>
+    </p>
+  </div>
+
+  <!-- Assigned To Section -->
+  <div class="mb-4 flex items-center">
+    <svg class="w-6 h-6 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 5.121a3 3 0 014.242 0L12 7.879l2.637-2.637a3 3 0 014.242 4.242L12 14l-6.779-6.779a3 3 0 010-4.242z" />
+    </svg>
+    <p class="text-gray-800 text-sm">
+      <span class="font-semibold">Assigned to:</span> 
+      <span class="text-blue-600"><%= @card.assigned_to %></span>
+    </p>
+  </div>
+
+  <!-- Due On Section -->
+  <div class="mb-4 flex items-center">
+    <svg class="w-6 h-6 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16m-6 4h6m-6 0v-6m0-4V4m0 12V8m0 4h6m-6 0v-6m0 4V4" />
+    </svg>
+    <p class="text-gray-800 text-sm">
+      <span class="font-semibold">Due on:</span> 
+      <span class="text-green-600"><%= @card.due_on.strftime("%a, %b %d") %></span>
+    </p>
+  </div>
+
+  <!-- Notes Section -->
+  <div class="flex items-start">
+    <svg class="w-6 h-6 text-gray-400 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16v16H4V4zm8 12h4m-4-4h4m-4-4h4M5 12h2m-2-4h2m-2 8h2" />
+    </svg>
+    <p class="text-gray-800 text-sm">
+      <span class="font-semibold">Notes:</span> 
+      <span class="text-gray-700"><%= @card.description %></span>
+    </p>
+  </div>
+</div>
+
 
     <div class="mb-4">
       <h2 class="text-xl font-semibold mb-2">Steps</h2>
