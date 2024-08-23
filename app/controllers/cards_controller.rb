@@ -29,9 +29,7 @@ class CardsController < ApplicationController
 
   def update
     if @card.update(card_params)
-      respond_to do |format|
-        format.html { redirect_to root_path, notice: 'Card was successfully updated.' }
-      end
+      render turbo_stream: turbo_stream.turbo_stream_refresh_tag(request_id: nil) #, root_path, notice: 'Card was successfully updated.' }
     else
       respond_to do |format|
         format.html { render :edit }
