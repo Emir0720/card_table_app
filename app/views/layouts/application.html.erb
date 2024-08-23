@@ -7,6 +7,10 @@
     <%= javascript_importmap_tags %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <%= turbo_refreshes_with(method: :morph, scroll: :preserve) %>
+
+    <%= yield :head %>
   </head>
 
   <body>

@@ -14,10 +14,8 @@ class CardsController < ApplicationController
     @card = Card.new(card_params)
     @card.column_id = @column.id
     if @card.save
-      respond_to do |format|
-        format.turbo_stream { render turbo_stream: "<turbo-stream action=\"refresh\"></turbo-stream>" }
-        
-      end
+      render turbo_stream: turbo_stream.turbo_stream_refresh_tag(request_id: nil)
+
 
     else
       respond_to do |format|

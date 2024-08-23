@@ -120,34 +120,35 @@
               </svg>
             </div>
 
-       <div class="column-menu hidden bg-[F7F7F7]" data-controller="column-menu">
-              <!-- Color Picker -->
-        <div class="flex space-x-2 mt-2">
-             <div class="w-6 h-6 bg-white border border-black rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-white"></div>
-             <div class="w-6 h-6 bg-[#E1EFFC] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#E1EFFC]"></div>
-             <div class="w-6 h-6 bg-[#FFE4F7] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#FFE4F7]"></div>
-             <div class="w-6 h-6 bg-[#FAF785] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#FAF785]"></div>
-            <div class="w-6 h-6 bg-[#E4F8E2] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#E4F8E2]"></div>
-             <div class="w-6 h-6 bg-[#F2EDFF] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#F2EDFF]"></div> 
-       </div>
+              <div class="column-menu hidden bg-[F7F7F7]" data-controller="column-menu" data-column-menu-target="menu">         
+                <!-- Color Picker -->
+                <div class="flex space-x-2 mt-2">
+                  <div class="w-6 h-6 bg-white border border-black rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-white"></div>
+                  <div class="w-6 h-6 bg-[#E1EFFC] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#E1EFFC]"></div>
+                  <div class="w-6 h-6 bg-[#FFE4F7] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#FFE4F7]"></div>
+                  <div class="w-6 h-6 bg-[#FAF785] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#FAF785]"></div>
+                  <div class="w-6 h-6 bg-[#E4F8E2] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#E4F8E2]"></div>
+                  <div class="w-6 h-6 bg-[#F2EDFF] rounded-full cursor-pointer" data-action="click->column-menu#changeColor" data-color="bg-[#F2EDFF]"></div>
+                </div>
 
-              <!-- Add a Card Column -->
-              <div class="column-menu-item">
-              <%= link_to "Add a card", new_column_card_path(column_id: column.id), 
-              class: "column-menu-item", 
-              data: {turbo_frame: "modal"} %>
-               </div>
+                <!-- Add a Card Column -->
+                <div class="column-menu-item">
+                  <%= link_to "Add a card", new_column_card_path(column_id: column.id), 
+                    class: "column-menu-item", 
+                    data: {turbo_frame: "modal"} %>
+                </div>
 
-              <!-- Rename Column -->
-              <div class="column-menu-item">
-                <%= link_to "Rename", edit_column_path(column), class: "text-blue-500 hover:text-blue-700" %>
+                <!-- Rename Column -->
+                <div class="column-menu-item">
+                  <%= link_to "Rename", edit_column_path(column), class: "text-blue-500 hover:text-blue-700" %>
+                </div>
+
+                <!-- Delete Column -->
+                <div class="column-menu-item">
+                  <%= button_to "Delete", column_path(column), method: :delete, class: "text-red-500 hover:text-red-700 font-semibold", data: { turbo_confirm: "Are you sure you want to delete this column?" } %>
+                </div>
               </div>
 
-              <!-- Delete Column -->
-              <div class="column-menu-item">
-                <%= button_to "Delete", column_path(column), method: :delete, class: "text-red-500 hover:text-red-700 font-semibold", data: { turbo_confirm: "Are you sure you want to delete this column?" } %>
-              </div>
-            </div>
 
             <h2 class="text-xl font-bold mb-4">
               <%= link_to column.name, column_path(column) %> (<%= column.cards.count %>)
