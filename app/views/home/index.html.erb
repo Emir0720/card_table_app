@@ -1,5 +1,5 @@
 <div class="bg-[#FCF8F3] min-h-screen flex flex-col">
-  <div class="flex-grow">
+<div class="flex-grow">
 <div class="container bg-[#FFFFFF] mx-auto px-8 md:px-10 lg:px-0 max-w-screen-xl shadow-lg rounded-lg flex flex-col mt-8 min-h-screen">
   
       <div class="flex justify-between items-center my-4 p-4">
@@ -50,8 +50,15 @@
             <div class="cards flex flex-wrap gap-4" data-column-id="<%= column.id %>">
               <% unless ["Not Now", "Done"].include?(column.name) %>
                 <% column.cards.each do |card| %>
-                  <div id="card-<%= card.id %>" class="card bg-white p-6 rounded-lg border border-gray-300 shadow-lg flex-shrink-0 transition duration-300 ease-in-out transform hover:scale-105" draggable="true" data-id="<%= card.id %>" style="border: 1px solid gray; border-radius: 4px;">
-                    <%= link_to card.title, column_card_path(column.id, card.id), class: "font-semibold text-lg" %>
+                  <div id="card-<%= card.id %>"
+                   class="card bg-white p-6 rounded-lg border border-gray-300 shadow-lg hover:shadow-2xl flex-shrink-0 transition-transform duration-300 ease-in-out transform hover:scale-105 max-w-sm w-full" 
+                   draggable="true" 
+                   data-id="<%= card.id %>" 
+                   style="border-radius: 12px; border: 2px solid #e5e7eb;">
+                   
+                   <!-- Kart Başlığı -->
+                    <%= link_to card.title, column_card_path(column.id, card.id), 
+                    class: "font-semibold text-lg text-gray-800 mb-2 block hover:text-indigo-600" %>
                     <p class="text-sm text-gray-600 mt-2">By <%= card.assigned_to %>, <%= time_ago_in_words(card.created_at) %> ago <%= card.due_on ? card.due_on.strftime("%B %d, %Y") : "No due date" %></p>
                    
                   </div>
@@ -108,15 +115,23 @@
           <!-- Dynamic Columns -->
         <div class="flex flex-wrap space-x-4 " data-controller="drag-drop column-menu">
         <% (@columns - @columns.select { |c| @static_columns.include?(c.name) }).each do |column| %>
-          <div class="relative flex-1 mt-10 ml-5 <%= column.color.nil? ? "bg-white" : column.color %> p-4 rounded-lg shadow-lg list"
+          <div class="relative flex-1 mt-10 ml-5  <%= column.color.nil? ? "bg-white" : column.color %> p-4 rounded-lg shadow-lg list"
              data-controller="drag-drop"
               data-id="<%= column.id %>"
               data-column-menu-target="column" 
               data-controller="column-menu"
               data-action="dragover->drag-drop#handleDragOver drop->drag-drop#handleDrop">
               <div class="absolute top-2 right-2 cursor-pointer" data-action="click->column-menu#toggleMenu">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-1200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h12M6 6h12m-6 12h6" />
+
+              <svg xmlns="http://www.w3.org/2000/svg"
+               class="h-6 w-6 text-gray-1200 hover:text-gray-1500 transition-colors duration-200 transform hover:scale-110"
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor">
+                <path stroke-linecap="round" 
+                stroke-linejoin="round" 
+                stroke-width="2" 
+                d="M6 12h12M6 6h12m-6 12h6" />
               </svg>
             </div>
 
